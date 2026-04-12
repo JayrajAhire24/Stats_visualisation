@@ -1,4 +1,4 @@
-import { Redis } from "@upstash/redis";
+const { Redis } = require("@upstash/redis");
 
 const redis = Redis.fromEnv();
 
@@ -42,7 +42,7 @@ function toHoursMinutes(seconds) {
   return `${h}h ${m}m`;
 }
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   if (req.headers["authorization"] !== `Bearer ${process.env.CRON_SECRET}`) {
     return res.status(401).json({ error: "Unauthorized" });
   }
