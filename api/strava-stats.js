@@ -29,9 +29,9 @@ module.exports = async function handler(req, res) {
     commute_distance_km: formatDistance(stats.commute.distance_km),
     commute_co2_saved_kg: stats.commute.co2_saved_kg + " kg",
     commute_time: stats.commute.time,
-    commute_fun_fact: `That's like ${formatIndian(rotations)} wheel rotations`,
+    commute_fun_fact: `That's like ${formatIndian(rotations)} wheel rotations.`,
     runs_distance_km: formatDistance(stats.runs.distance_km),
     runs_time: stats.runs.time,
-    runs_fun_fact: `That's like ${formatIndian(dosas)} dosas stacked on top of each other`,
+    runs_fun_fact: `That's like ${formatIndian(dosas)} dosas stacked on top of each other.`,
   });
 };
