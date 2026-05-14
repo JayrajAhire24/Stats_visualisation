@@ -5,8 +5,11 @@ function formatDistance(km) {
   return km.toLocaleString("en-IN") + " km";
 }
 
-function formatIndian(num) {
-  return Math.round(num).toLocaleString("en-IN");
+function formatScale(num) {
+  if (num >= 1_000_000_000) return (num / 1_000_000_000).toFixed(2) + "B";
+  if (num >= 1_000_000) return (num / 1_000_000).toFixed(2) + "M";
+  if (num >= 1_000) return (num / 1_000).toFixed(2) + "K";
+  return Math.round(num).toString();
 }
 
 module.exports = async function handler(req, res) {
@@ -21,7 +24,6 @@ module.exports = async function handler(req, res) {
 
   const stats = typeof raw === "string" ? JSON.parse(raw) : raw;
 
-  // Fun facts
   const dosas = stats.runs.distance_km * 100000 / 24;
   const rotations = stats.commute.distance_km * 1000000 / 2168;
 
@@ -29,9 +31,9 @@ module.exports = async function handler(req, res) {
     commute_distance_km: formatDistance(stats.commute.distance_km),
     commute_co2_saved_kg: stats.commute.co2_saved_kg + " kg",
     commute_time: stats.commute.time,
-    commute_fun_fact: `That's like ${formatIndian(rotations)} wheel rotations.`,
+    commute_fun_fact: `That's like ${formatScale(rotations)} wheel rotations`,
     runs_distance_km: formatDistance(stats.runs.distance_km),
     runs_time: stats.runs.time,
-    runs_fun_fact: `That's like ${formatIndian(dosas)} dosas stacked on top of each other.`,
+    runs_fun_fact: `That's like ${formatScale(dosas)} dosas stacked on top of each other`,
   });
 };
