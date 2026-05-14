@@ -2,7 +2,11 @@ const { Redis } = require("@upstash/redis");
 const redis = Redis.fromEnv();
 
 function formatDistance(km) {
-  return km.toLocaleString("en-US") + " km";
+  return km.toLocaleString("en-IN") + " km";
+}
+
+function formatIndian(num) {
+  return Math.round(num).toLocaleString("en-IN");
 }
 
 module.exports = async function handler(req, res) {
@@ -17,11 +21,17 @@ module.exports = async function handler(req, res) {
 
   const stats = typeof raw === "string" ? JSON.parse(raw) : raw;
 
+  // Fun facts
+  const dosas = stats.runs.distance_km * 100000 / 24;
+  const rotations = stats.commute.distance_km * 1000000 / 2168;
+
   res.json({
     commute_distance_km: formatDistance(stats.commute.distance_km),
     commute_co2_saved_kg: stats.commute.co2_saved_kg + " kg",
     commute_time: stats.commute.time,
+    commute_fun_fact: `That's like ${formatIndian(rotations)} wheel rotations`,
     runs_distance_km: formatDistance(stats.runs.distance_km),
     runs_time: stats.runs.time,
+    runs_fun_fact: `That's like ${formatIndian(dosas)} dosas stacked on top of each other`,
   });
 };
